@@ -1,6 +1,9 @@
 <!-- Author: Shady Rashwan
 date: 12 March 2023 -->
 
+# SHI APP (IMAGES to PDF)
+the app convert images to pdf in folders and subfolders, then delete the files after converting
+
 ##############################################
 ## Complete version works for all image files including .heic on mac
 ##############################################
