@@ -1,0 +1,14 @@
+
+# Convert conda dependencies to pip requirements
+appscript==1.2.2
+cffi==1.16.0
+comtypes==1.2.0
+docx2pdf==0.1.8
+pillow-heif==0.15.0
+pip==24.0
+pycparser==2.21
+pyheif==0.7.1
+reportlab==4.0.6
+setuptools==69.1.1
+tqdm==4.66.1
+wheel==0.43.0
