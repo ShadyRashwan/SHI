@@ -33,7 +33,8 @@
 
 Input a folder path, the tool will process it and process sub-folders if any.
 
-![folder](shi.svg)
+![SHI Logo](shi.png)
+
 
 ## 🚀 Installation (Detailed Guide)
 
