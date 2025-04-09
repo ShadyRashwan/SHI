@@ -31,7 +31,7 @@
 
 ## 📊 How It Works
 
-Input a folder path and it the tool will process it and process sub-folders if any.
+Input a folder path, the tool will process it and process sub-folders if any.
 
 ![folder](shi.svg)
 
@@ -164,7 +164,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 Made with ❤️ by Shady Rashwan
 - Created: March 12, 2023
-- Updated: April 2025
 
 ---
 
