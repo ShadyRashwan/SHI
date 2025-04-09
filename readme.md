@@ -62,7 +62,7 @@ SHI requires **Python 3.6+**. You can install dependencies using **Conda**, **pi
 
 3. Clone the repository
    ```cmd
-   git clone https://github.com/username/SHI.git
+   git clone https://github.com/shadyrashwan/SHI.git
    cd SHI
    ```
 
