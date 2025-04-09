@@ -168,8 +168,11 @@ def print_welcome_message():
     # Warning message
     warning = """
 ⚠️  IMPORTANT NOTE ⚠️
-By default, images will be deleted after processing.
-Only the PDF file containing the images will be saved!
+ - Please ensure backup of your folder before using this tool.
+ - This tool will delete all image files in the folder after creating the PDF.
+ - Only the resulting PDF file will be saved.
+ - If you want to keep the original images, please select 'No' when prompted.
+Thank you for using the tool!
 """
     print(warning)
 
@@ -184,7 +187,7 @@ def print_completion_message(folder_name):
 ║  Your PDF has been successfully created in:                      ║
 ║  {folder_name}                                 
 ║                                                                  ║
-║  Thank you for using the tool!                                        ║
+║  See you!                                        ║
 ║                                                                  ║
 ╚══════════════════════════════════════════════════════════════════╝
 """
