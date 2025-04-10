@@ -33,7 +33,7 @@
 
 Input a folder path, the tool will process it and process sub-folders if any.
 
-![SHI Logo](structure.png)
+![SHI Logo](app/structure.png)
 
 
 ## 🚀 Installation (Detailed Guide)
@@ -42,55 +42,22 @@ SHI requires **Python 3.6+**. You can install dependencies using **Conda**, **pi
 
 ### 🪟 Windows Installation
 
-#### Installing Conda (Miniconda) on Windows
-1. Download the installer from [Miniconda website](https://docs.conda.io/en/latest/miniconda.html)
-2. Run the downloaded .exe file and follow the installation instructions
-3. During installation:
-   - Install for "Just Me" (recommended)
-   - Choose the default installation location
-   - Check "Add Miniconda to my PATH environment variable"
-   - Check "Register Miniconda as my default Python"
-4. Open a new Command Prompt to start using Conda
+#### Installing Python on Windows
+1. **Download Python** from the official website: [https://www.python.org/downloads/](https://www.python.org/downloads/)
+2. During installation, **make sure to check the box that says "Add Python to PATH"**
+3. Complete the installation
 
 #### Setting Up SHI on Windows
-1. Open Command Prompt
-   - Press `Win + R`, type `cmd`, and press **Enter**.
+1. **Download the entire project folder** as a ZIP file from GitHub
+2. **Right-click the ZIP** and select **"Extract All…"**
+3. Open the extracted folder
 
-2. Install Git (if not already installed)
-   - Download from [https://git-scm.com](https://git-scm.com) and install (default options are fine).
-   - After installation, reopen Command Prompt.
-
-3. Clone the repository
-   ```cmd
-   git clone https://github.com/shadyrashwan/SHI.git
-   cd SHI
-   ```
-
-4. Choose one of the following setup options:
-
-   ##### 👉 Option A: Using Conda (Recommended)
-   ```cmd
-   conda env create -f env.yml
-   conda activate shi
-   ```
-
-   ##### 👉 Option B: Using Python Virtual Environment (`venv`)
-   ```cmd
-   python -m venv venv
-   venv\Scripts\activate
-   pip install -r requirements.txt
-   ```
-
-   ##### 👉 Option C: Using pip (No virtual environment)
-   ```cmd
-   pip install -r requirements.txt
-   ```
-
-#### Running SHI on Windows
-1. Run the Python script:
-   ```cmd
-   python  medical.py
-   ```
+4. **Install dependencies** by:
+   - run file `install.bat`
+5. **Run the application** by:
+ - Double-click `run.bat` to launch the application
+ - The app will open in your browser automatically
+ - If the browser doesn't open automatically, go to: [http://localhost:8501](http://localhost:8501)
 
 ### 🐧 Mac / Linux Installation
 
@@ -151,22 +118,34 @@ SHI requires **Python 3.6+**. You can install dependencies using **Conda**, **pi
 
 #### Running SHI on Mac/Linux
 1. Open Terminal.
-2. Navigate to the SHI directory:
+2. Navigate to the SHI directory.
+3. Run the command-line interface:
    ```bash
-   python medical.py
+   python app/shi.py
+   ```
+4. Or run the graphical interface:
+   ```bash
+   streamlit run app/gui.py
    ```
 
 ## 💻 Usage
 
 Once you've completed the installation, follow these steps to use SHI:
 
-### Usage Instructions
+### Command-line Usage Instructions
 1. When prompted, enter the full path to the parent folder.
    - Example: `C:\Users\YourUsername\medical-claims` (Windows)
    - Example: `/Users/YourUsername/medical-claims` (Mac/Linux)
 2. Choose whether to preserve original images or delete them after PDF creation.
 3. The tool will process all images in the folder and its subfolders.
 4. PDFs will be created in each folder, named after the folder.
+
+### Graphical Interface Usage
+1. Launch the application using the instructions above
+2. Enter the folder path containing your images
+3. Choose whether to delete original images or keep them
+4. Click "Convert" to start the process
+5. Monitor progress and view results in the interface
 
 ## 📊 Supported Image Formats
 
@@ -179,15 +158,19 @@ Once you've completed the installation, follow these steps to use SHI:
 | TIFF   | .tiff, .tif | ✅ |
 | HEIC   | .heic     | ✅ (auto-converts to PNG) |
 
+## 🛠️ Troubleshooting
+
+- If you see an error saying `'streamlit' is not recognized`, it means Python is not added to your system PATH. Reinstall Python and ensure the **"Add to PATH"** checkbox is ticked.
+- If you get warnings, just ignore them unless something breaks.
+- If Windows asks about allowing access when running the app: Click **Allow Access**.
+
 ## ⚠️ Important Notes
 
 - By default, original images will be deleted after processing
 - Make a backup of your images if needed before running the tool
 - The tool creates one PDF per folder, named after the folder
+- Your internet connection is **not required** after installing
 
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📜 License
 
