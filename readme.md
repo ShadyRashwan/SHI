@@ -1,3 +1,5 @@
+<!-- markdownlint-disable MD033 -->
+
 # SHI - Images to PDF Converter
 
 ## 📋 Overview

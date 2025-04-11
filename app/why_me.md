@@ -1,3 +1,5 @@
+<!-- markdownlint-disable MD033 -->
+
 # 🤔 Why me?! 🤷‍♂️
 
 <div style="font-family: 'Comic Sans MS', cursive, sans-serif; color: #ff80ab; background-color: #ffeef7; padding: 20px; border-radius: 15px; border: 3px dashed #f48fb1; margin: 20px 0;">
