@@ -1,0 +1,5 @@
+libheif-dev
+libde265-dev
+libjpeg-dev
+libpng-dev
+libtiff-dev
