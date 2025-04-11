@@ -1,7 +1,12 @@
 # Core dependencies
+zipp==3.21.0
+importlib-metadata==8.6.1
+setuptools==69.1.1
+wheel
+pip==25.0.0
 streamlit==1.44.1
-pillow==10.2.0
-pillow-heif==0.15.0
+pillow
+pillow-heif
 reportlab==4.0.6
 python-docx==1.1.0
 docx2pdf==0.1.8
@@ -41,8 +46,4 @@ pyarrow==15.0.2
 pyheif==0.7.1
 
 # Compatibility helpers
-zipp==3.21.0
-importlib-metadata==8.6.1
-setuptools==69.1.1
-wheel==0.43.0
-pip==25.0.0
+
