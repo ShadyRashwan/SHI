@@ -63,8 +63,9 @@ jobs:
         import logging
 
         # Configure logging
+        log_file = os.path.join(os.path.expanduser('~'), 'shi_app.log')
         logging.basicConfig(
-            filename=os.path.join(os.path.expanduser('~'), 'shi_app.log'),
+            filename=log_file,
             level=logging.INFO,
             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
         )
@@ -89,6 +90,8 @@ jobs:
 
         def main():
             try:
+                logger.info('Starting SHI application launcher')
+                
                 # Get the directory where the executable is located
                 if getattr(sys, 'frozen', False):
                     # Running as compiled executable
@@ -105,6 +108,12 @@ jobs:
                 
                 logger.info(f'App directory: {app_dir}')
                 logger.info(f'GUI path: {gui_path}')
+                
+                # Verify paths exist
+                if not os.path.exists(app_dir):
+                    raise FileNotFoundError(f'App directory not found: {app_dir}')
+                if not os.path.exists(gui_path):
+                    raise FileNotFoundError(f'GUI script not found: {gui_path}')
                 
                 # Add app directory to path
                 sys.path.insert(0, base_dir)
@@ -148,18 +157,63 @@ jobs:
                 from tkinter import messagebox
                 root = tk.Tk()
                 root.withdraw()
-                messagebox.showerror('SHI App Error', f'An error occurred launching the application: {str(e)}\\n\\nCheck the log file at %USERPROFILE%/shi_app.log')
+                messagebox.showerror('SHI App Error', 
+                                    f'An error occurred launching the application: {str(e)}\\n\\n'
+                                    f'Check the log file at: {log_file}')
                 raise
 
         if __name__ == '__main__':
             main()" > launcher.py
     
-    - name: Create batch file launcher
+    - name: Create direct batch file launcher
       run: |
         echo "@echo off
+        echo Starting SHI Application...
+        echo This might take a few seconds...
         cd %~dp0
-        start pythonw launcher.py
+        
+        REM Direct way to start Streamlit
+        set PYTHONPATH=%~dp0
+        Python\python.exe -m streamlit run app\gui.py --server.headless=false
+        
+        if %ERRORLEVEL% NEQ 0 (
+            echo Error starting application. Please check the log files.
+            echo A log file has been created at %%USERPROFILE%%\shi_app.log
+            pause
+        )
         " > run_shi.bat
+    
+    - name: Create diagnostic batch file
+      run: |
+        echo "@echo off
+        echo SHI Application Diagnostics
+        echo ===========================
+        echo.
+        echo Creating diagnostic log...
+        
+        cd %~dp0
+        
+        echo Directory contents: > %%USERPROFILE%%\shi_diagnostics.log
+        dir /s /b >> %%USERPROFILE%%\shi_diagnostics.log
+        
+        echo. >> %%USERPROFILE%%\shi_diagnostics.log
+        echo Python installation: >> %%USERPROFILE%%\shi_diagnostics.log
+        Python\python.exe --version >> %%USERPROFILE%%\shi_diagnostics.log 2>&1
+        
+        echo. >> %%USERPROFILE%%\shi_diagnostics.log
+        echo Installed packages: >> %%USERPROFILE%%\shi_diagnostics.log
+        Python\python.exe -m pip list >> %%USERPROFILE%%\shi_diagnostics.log 2>&1
+        
+        echo. >> %%USERPROFILE%%\shi_diagnostics.log
+        echo Trying to run streamlit: >> %%USERPROFILE%%\shi_diagnostics.log
+        Python\python.exe -c \"import streamlit; print('Streamlit version:', streamlit.__version__)\" >> %%USERPROFILE%%\shi_diagnostics.log 2>&1
+        
+        echo.
+        echo Diagnostic log created at: %%USERPROFILE%%\shi_diagnostics.log
+        echo Please send this file if you are experiencing issues.
+        echo.
+        pause
+        " > diagnostics.bat
     
     - name: Create installer config
       run: |
@@ -170,10 +224,6 @@ jobs:
         # Reference the launcher script directly
         script=launcher.py
         icon=app_files\assets\shi_icon.ico
-
-        [Command run_shi]
-        entry_point=launcher:main
-        console=false
 
         [Python]
         version=3.9.13
@@ -212,18 +262,24 @@ jobs:
         files = app_files/
             launcher.py
             run_shi.bat
+            diagnostics.bat
 
         [Build]
         directory=build/nsis
         installer_name=SHI_Setup.exe
 
         [Shortcut SHI]
-        target=pythonw
-        parameters=launcher.py
+        target=$INSTDIR\run_shi.bat
         icon=app_files\assets\shi_icon.ico
-        console=false
+        console=true
 
-        [Shortcut SHI Command Prompt]
+        [Shortcut SHI Diagnostics]
+        target=$INSTDIR\diagnostics.bat
+        comment=Troubleshoot SHI Application
+        icon=app_files\assets\shi_icon.ico
+        console=true
+
+        [Shortcut SHI Command Line]
         target=$INSTDIR\Python\python.exe
         parameters=app\shi.py
         icon=app_files\assets\shi_icon.ico
