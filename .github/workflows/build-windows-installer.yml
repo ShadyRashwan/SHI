@@ -29,27 +29,27 @@ jobs:
     
     - name: Create project structure
       run: |
-        mkdir -p SHI_App/assets
-        mkdir -p SHI_App/app
-        xcopy /E /I /Y app SHI_App\app
-        copy requirements.txt SHI_App\
+        mkdir -p app_files/assets
+        mkdir -p app_files/app
+        xcopy /E /I /Y app app_files\app
+        copy requirements.txt app_files\
     
     - name: Create icon
       run: |
         # Convert app/structure.png to ico format
-        python -c "from PIL import Image; img = Image.open('app/structure.png').convert('RGBA'); img.save('SHI_App/assets/shi_icon.ico')"
+        python -c "from PIL import Image; img = Image.open('app/structure.png').convert('RGBA'); img.save('app_files/assets/shi_icon.ico')"
     
     - name: Create LICENSE.txt
       run: |
-        echo "MIT License" > SHI_App\LICENSE.txt
-        echo "Copyright (c) 2023 Shady Rashwan" >> SHI_App\LICENSE.txt
-        echo "" >> SHI_App\LICENSE.txt
-        echo "Permission is hereby granted, free of charge, to any person obtaining a copy" >> SHI_App\LICENSE.txt
-        echo "of this software and associated documentation files (the \"Software\"), to deal" >> SHI_App\LICENSE.txt
-        echo "in the Software without restriction, including without limitation the rights" >> SHI_App\LICENSE.txt
-        echo "to use, copy, modify, merge, publish, distribute, sublicense, and/or sell" >> SHI_App\LICENSE.txt
-        echo "copies of the Software, and to permit persons to whom the Software is" >> SHI_App\LICENSE.txt
-        echo "furnished to do so, subject to the following conditions:" >> SHI_App\LICENSE.txt
+        echo "MIT License" > app_files\LICENSE.txt
+        echo "Copyright (c) 2023 Shady Rashwan" >> app_files\LICENSE.txt
+        echo "" >> app_files\LICENSE.txt
+        echo "Permission is hereby granted, free of charge, to any person obtaining a copy" >> app_files\LICENSE.txt
+        echo "of this software and associated documentation files (the \"Software\"), to deal" >> app_files\LICENSE.txt
+        echo "in the Software without restriction, including without limitation the rights" >> app_files\LICENSE.txt
+        echo "to use, copy, modify, merge, publish, distribute, sublicense, and/or sell" >> app_files\LICENSE.txt
+        echo "copies of the Software, and to permit persons to whom the Software is" >> app_files\LICENSE.txt
+        echo "furnished to do so, subject to the following conditions:" >> app_files\LICENSE.txt
     
     - name: Create launcher script
       run: |
@@ -100,7 +100,7 @@ jobs:
             subprocess.run(cmd)
 
         if __name__ == '__main__':
-            main()" > SHI_App\launcher.py
+            main()" > launcher.py
     
     - name: Create installer config
       run: |
@@ -108,8 +108,9 @@ jobs:
         name=SHI Image to PDF Converter
         version=1.0.0
         publisher=Shady Rashwan
-        entry_point=SHI_App.launcher:main
-        icon=SHI_App\assets\shi_icon.ico
+        # Reference the launcher script directly
+        script=launcher.py
+        icon=app_files\assets\shi_icon.ico
 
         [Python]
         version=3.9.13
@@ -124,17 +125,20 @@ jobs:
             pillow-heif==0.15.0
             reportlab==4.1.0
             tqdm==4.66.2
+            altair==5.2.0
+            click==8.1.7
             
-        # Files to include
-        files=SHI_App/
+        # Files to include as loose files, not as a package
+        files = app_files/
+            launcher.py
 
         [Build]
         directory=build/nsis
         installer_name=SHI_Setup.exe
 
         [Shortcut SHI]
-        entry_point=SHI_App.launcher:main
-        icon=SHI_App\assets\shi_icon.ico
+        script=launcher.py
+        icon=app_files\assets\shi_icon.ico
         console=false" > installer.cfg
     
     - name: Build installer
