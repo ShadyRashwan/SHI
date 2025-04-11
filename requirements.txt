@@ -1,49 +1,38 @@
-# Core dependencies
-zipp==3.21.0
-importlib-metadata==8.6.1
-setuptools==69.1.1
-wheel
-pip==25.0.0
-streamlit==1.44.1
-pillow
-pillow-heif
-reportlab==4.0.6
-python-docx==1.1.0
-docx2pdf==0.1.8
-pycairo==1.26.0
-rlpycairo==0.2.0
-altair==5.3.0
-pydeck==0.9.1
-tqdm==4.66.1
-numpy==1.26.4
-pandas==2.2.2
-scipy==1.12.0
-
-# PDF and file handling
-lxml==4.9.3
-markdown-it-py==3.0.0
-mdurl==0.1.2
-pyyaml==6.0.2
-
-# Optional dependencies used by Streamlit or image formats
-protobuf==4.25.3
-click==8.1.8
-jinja2==3.1.6
-typing-extensions==4.8.0
-watchdog==6.0.0
-requests==2.32.3
-certifi==2025.1.31
-charset-normalizer==3.4.1
-idna==3.10
-urllib3==2.0.3
-
-# Streamlit performance and caching
-blinker==1.9.0
-cachetools==5.3.2
-pyarrow==15.0.2
-
-# For HEIF/HEIC image support (via pillow-heif)
-pyheif==0.7.1
-
-# Compatibility helpers
-
+ zipp==3.21.0
+ importlib-metadata==8.6.1
+ setuptools==69.1.1
+ wheel
+ pip==25.0.0
+ streamlit==1.44.1
+ pillow
+ pillow-heif
+ reportlab==4.0.6
+ python-docx==1.1.0
+ docx2pdf==0.1.8
+ pycairo==1.26.0
+ rlpycairo==0.2.0
+ altair==5.3.0
+ pydeck==0.9.1
+ tqdm==4.66.1
+ numpy==1.26.4
+ pandas==2.2.2
+ scipy==1.12.0
+ lxml==4.9.3
+ markdown-it-py==3.0.0
+ mdurl==0.1.2
+ pyyaml==6.0.2
+ protobuf==4.25.3
+ click==8.1.8
+ jinja2==3.1.6
+ typing-extensions==4.8.0
+ watchdog==6.0.0
+ requests==2.32.3
+ certifi==2025.1.31
+ charset-normalizer==3.4.1
+ idna==3.10
+ urllib3==2.0.3
+ blinker==1.9.0
+ cachetools==5.3.2
+ pyarrow==15.0.2
+ pyheif==0.7.1
+ ```
