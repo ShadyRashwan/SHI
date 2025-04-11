@@ -1,5 +1,19 @@
+Path: requirements.txt
 altair==5.3.0
 altgraph==0.17.4
+appscript==1.2.2
+cffi==1.16.0
+comtypes==1.2.0
+docx2pdf==0.1.8
+pillow-heif==0.15.0
+pip==25.0
+pycparser==2.21
+pyheif==0.7.1
+reportlab==4.0.6
+setuptools==69.1.1
+tqdm==4.66.1
+wheel==0.43.0
+
 attrs==25.3.0
 blinker==1.9.0
 brotli==1.1.0
@@ -139,15 +153,4 @@ zlib==1.2.13
 zstd==1.5.5
 
 # pip dependencies
-appscript==1.2.2
-cffi==1.16.0
-comtypes==1.2.0
-docx2pdf==0.1.8
-pillow-heif
-pip==25.0
-pycparser==2.21
-pyheif==0.7.1
-reportlab==4.0.6
-setuptools==69.1.1
-tqdm==4.66.1
-wheel==0.43.0
+
