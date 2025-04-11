@@ -23,7 +23,9 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pynsist pillow
+        # Install all required packages - both for building and for including in the installer
+        pip install pynsist
+        pip install streamlit pillow pillow-heif reportlab tqdm
     
     - name: Create project structure
       run: |
@@ -115,14 +117,14 @@ jobs:
         format=bundled
 
         [Include]
-        # Required packages
-        packages=
-            streamlit
-            pillow
-            pillow-heif
-            reportlab
-            tqdm
-
+        # Packages from PyPI that should be included
+        pypi_wheels = 
+            streamlit==1.32.0
+            pillow==10.2.0
+            pillow-heif==0.15.0
+            reportlab==4.1.0
+            tqdm==4.66.2
+            
         # Files to include
         files=SHI_App/
 
