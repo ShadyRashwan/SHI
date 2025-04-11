@@ -272,7 +272,6 @@ jobs:
 
         [Shortcut SHI Diagnostics]
         target=$INSTDIR\diagnostics.bat
-        comment=Troubleshoot SHI Application
         icon=app_files\assets\shi_icon.ico
         console=true
 
