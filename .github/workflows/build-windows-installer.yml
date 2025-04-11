@@ -167,53 +167,51 @@ jobs:
     
     - name: Create direct batch file launcher
       run: |
-        echo "@echo off
-        echo Starting SHI Application...
-        echo This might take a few seconds...
-        cd %~dp0
-        
-        REM Direct way to start Streamlit
-        set PYTHONPATH=%~dp0
-        Python\python.exe -m streamlit run app\gui.py --server.headless=false
-        
-        if %ERRORLEVEL% NEQ 0 (
-            echo Error starting application. Please check the log files.
-            echo A log file has been created at %%USERPROFILE%%\shi_app.log
-            pause
-        )
-        " > run_shi.bat
+        echo @echo off > run_shi.bat
+        echo echo Starting SHI Application... >> run_shi.bat
+        echo echo This might take a few seconds... >> run_shi.bat
+        echo cd %%~dp0 >> run_shi.bat
+        echo. >> run_shi.bat
+        echo REM Direct way to start Streamlit >> run_shi.bat
+        echo set PYTHONPATH=%%~dp0 >> run_shi.bat
+        echo Python\python.exe -m streamlit run app\gui.py --server.headless=false >> run_shi.bat
+        echo. >> run_shi.bat
+        echo if %%ERRORLEVEL%% NEQ 0 ( >> run_shi.bat
+        echo     echo Error starting application. Please check the log files. >> run_shi.bat
+        echo     echo A log file has been created at %%%%USERPROFILE%%%%\shi_app.log >> run_shi.bat
+        echo     pause >> run_shi.bat
+        echo ) >> run_shi.bat
     
     - name: Create diagnostic batch file
       run: |
-        echo "@echo off
-        echo SHI Application Diagnostics
-        echo ===========================
-        echo.
-        echo Creating diagnostic log...
-        
-        cd %~dp0
-        
-        echo Directory contents: > %%USERPROFILE%%\shi_diagnostics.log
-        dir /s /b >> %%USERPROFILE%%\shi_diagnostics.log
-        
-        echo. >> %%USERPROFILE%%\shi_diagnostics.log
-        echo Python installation: >> %%USERPROFILE%%\shi_diagnostics.log
-        Python\python.exe --version >> %%USERPROFILE%%\shi_diagnostics.log 2>&1
-        
-        echo. >> %%USERPROFILE%%\shi_diagnostics.log
-        echo Installed packages: >> %%USERPROFILE%%\shi_diagnostics.log
-        Python\python.exe -m pip list >> %%USERPROFILE%%\shi_diagnostics.log 2>&1
-        
-        echo. >> %%USERPROFILE%%\shi_diagnostics.log
-        echo Trying to run streamlit: >> %%USERPROFILE%%\shi_diagnostics.log
-        Python\python.exe -c \"import streamlit; print('Streamlit version:', streamlit.__version__)\" >> %%USERPROFILE%%\shi_diagnostics.log 2>&1
-        
-        echo.
-        echo Diagnostic log created at: %%USERPROFILE%%\shi_diagnostics.log
-        echo Please send this file if you are experiencing issues.
-        echo.
-        pause
-        " > diagnostics.bat
+        echo @echo off > diagnostics.bat
+        echo echo SHI Application Diagnostics >> diagnostics.bat
+        echo echo =========================== >> diagnostics.bat
+        echo echo. >> diagnostics.bat
+        echo echo Creating diagnostic log... >> diagnostics.bat
+        echo. >> diagnostics.bat
+        echo cd %%~dp0 >> diagnostics.bat
+        echo. >> diagnostics.bat
+        echo echo Directory contents: ^> %%USERPROFILE%%\shi_diagnostics.log >> diagnostics.bat
+        echo dir /s /b ^>^> %%USERPROFILE%%\shi_diagnostics.log >> diagnostics.bat
+        echo. >> diagnostics.bat
+        echo echo. ^>^> %%USERPROFILE%%\shi_diagnostics.log >> diagnostics.bat
+        echo echo Python installation: ^>^> %%USERPROFILE%%\shi_diagnostics.log >> diagnostics.bat
+        echo Python\python.exe --version ^>^> %%USERPROFILE%%\shi_diagnostics.log 2^>^&1 >> diagnostics.bat
+        echo. >> diagnostics.bat
+        echo echo. ^>^> %%USERPROFILE%%\shi_diagnostics.log >> diagnostics.bat
+        echo echo Installed packages: ^>^> %%USERPROFILE%%\shi_diagnostics.log >> diagnostics.bat
+        echo Python\python.exe -m pip list ^>^> %%USERPROFILE%%\shi_diagnostics.log 2^>^&1 >> diagnostics.bat
+        echo. >> diagnostics.bat
+        echo echo. ^>^> %%USERPROFILE%%\shi_diagnostics.log >> diagnostics.bat
+        echo echo Trying to run streamlit: ^>^> %%USERPROFILE%%\shi_diagnostics.log >> diagnostics.bat
+        echo Python\python.exe -c "import streamlit; print('Streamlit version:', streamlit.__version__)" ^>^> %%USERPROFILE%%\shi_diagnostics.log 2^>^&1 >> diagnostics.bat
+        echo. >> diagnostics.bat
+        echo echo. >> diagnostics.bat
+        echo echo Diagnostic log created at: %%USERPROFILE%%\shi_diagnostics.log >> diagnostics.bat
+        echo echo Please send this file if you are experiencing issues. >> diagnostics.bat
+        echo echo. >> diagnostics.bat
+        echo pause >> diagnostics.bat
     
     - name: Create installer config
       run: |
