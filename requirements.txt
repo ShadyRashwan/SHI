@@ -143,7 +143,7 @@ appscript==1.2.2
 cffi==1.16.0
 comtypes==1.2.0
 docx2pdf==0.1.8
-pillow-heif==0.15.0
+pillow-heif
 pip==25.0
 pycparser==2.21
 pyheif==0.7.1
