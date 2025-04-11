@@ -173,7 +173,6 @@ jobs:
 
         [Command run_shi]
         entry_point=launcher:main
-        icon=app_files\assets\shi_icon.ico
         console=false
 
         [Python]
