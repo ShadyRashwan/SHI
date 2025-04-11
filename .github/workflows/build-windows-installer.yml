@@ -1,0 +1,157 @@
+name: Build Windows Installer
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  # Allow manual triggering
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pynsist pillow
+    
+    - name: Create project structure
+      run: |
+        mkdir -p SHI_App/assets
+        mkdir -p SHI_App/app
+        xcopy /E /I /Y app SHI_App\app
+        copy requirements.txt SHI_App\
+    
+    - name: Create icon
+      run: |
+        # Convert app/structure.png to ico format
+        python -c "from PIL import Image; img = Image.open('app/structure.png').convert('RGBA'); img.save('SHI_App/assets/shi_icon.ico')"
+    
+    - name: Create LICENSE.txt
+      run: |
+        echo "MIT License" > SHI_App\LICENSE.txt
+        echo "Copyright (c) 2023 Shady Rashwan" >> SHI_App\LICENSE.txt
+        echo "" >> SHI_App\LICENSE.txt
+        echo "Permission is hereby granted, free of charge, to any person obtaining a copy" >> SHI_App\LICENSE.txt
+        echo "of this software and associated documentation files (the \"Software\"), to deal" >> SHI_App\LICENSE.txt
+        echo "in the Software without restriction, including without limitation the rights" >> SHI_App\LICENSE.txt
+        echo "to use, copy, modify, merge, publish, distribute, sublicense, and/or sell" >> SHI_App\LICENSE.txt
+        echo "copies of the Software, and to permit persons to whom the Software is" >> SHI_App\LICENSE.txt
+        echo "furnished to do so, subject to the following conditions:" >> SHI_App\LICENSE.txt
+    
+    - name: Create launcher script
+      run: |
+        echo "import os
+        import sys
+        import subprocess
+        import webbrowser
+        import threading
+        import time
+        import socket
+
+        def find_free_port():
+            with socket.socket() as s:
+                s.bind(('', 0))
+                return s.getsockname()[1]
+
+        def open_browser(port, delay=1.5):
+            time.sleep(delay)
+            webbrowser.open(f'http://localhost:{port}')
+
+        def main():
+            # Set up paths
+            base_dir = os.path.dirname(os.path.abspath(__file__))
+            app_dir = os.path.join(base_dir, 'app')
+            gui_path = os.path.join(app_dir, 'gui.py')
+            
+            # Add app directory to path
+            sys.path.insert(0, base_dir)
+            
+            # Find available port
+            port = find_free_port()
+            
+            # Launch browser in separate thread
+            browser_thread = threading.Thread(target=open_browser, args=(port, 2.0))
+            browser_thread.daemon = True
+            browser_thread.start()
+            
+            # Run Streamlit
+            cmd = [
+                sys.executable, 
+                '-m', 'streamlit', 'run', 
+                gui_path, 
+                '--server.port', str(port),
+                '--server.headless', 'true',
+                '--browser.serverAddress', 'localhost'
+            ]
+            
+            subprocess.run(cmd)
+
+        if __name__ == '__main__':
+            main()" > SHI_App\launcher.py
+    
+    - name: Create installer config
+      run: |
+        echo "[Application]
+        name=SHI Image to PDF Converter
+        version=1.0.0
+        publisher=Shady Rashwan
+        entry_point=SHI_App.launcher:main
+        icon=SHI_App\assets\shi_icon.ico
+
+        [Python]
+        version=3.9.13
+        bitness=64
+        format=bundled
+
+        [Include]
+        # Required packages
+        packages=
+            streamlit
+            pillow
+            pillow-heif
+            reportlab
+            tqdm
+
+        # Files to include
+        files=SHI_App/
+
+        [Build]
+        directory=build/nsis
+        installer_name=SHI_Setup.exe
+
+        [Shortcut SHI]
+        entry_point=SHI_App.launcher:main
+        icon=SHI_App\assets\shi_icon.ico
+        console=false" > installer.cfg
+    
+    - name: Build installer
+      run: python -m nsist installer.cfg
+    
+    - name: Upload installer
+      uses: actions/upload-artifact@v3
+      with:
+        name: SHI-Windows-Installer
+        path: build/nsis/SHI_Setup.exe
+    
+    # Optional: Create a GitHub release
+    - name: Create Release
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      uses: softprops/action-gh-release@v1
+      with:
+        files: build/nsis/SHI_Setup.exe
+        name: SHI v1.0.0
+        tag_name: v1.0.0
+        draft: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
