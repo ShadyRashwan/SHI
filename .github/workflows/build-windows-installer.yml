@@ -165,7 +165,8 @@ jobs:
         if __name__ == '__main__':
             main()" > launcher.py
     
-    - name: Create direct batch file launcher
+    - name: Create batch files
+      shell: cmd
       run: |
         echo @echo off > run_shi.bat
         echo echo Starting SHI Application... >> run_shi.bat
@@ -181,9 +182,7 @@ jobs:
         echo     echo A log file has been created at %%%%USERPROFILE%%%%\shi_app.log >> run_shi.bat
         echo     pause >> run_shi.bat
         echo ) >> run_shi.bat
-    
-    - name: Create diagnostic batch file
-      run: |
+
         echo @echo off > diagnostics.bat
         echo echo SHI Application Diagnostics >> diagnostics.bat
         echo echo =========================== >> diagnostics.bat
