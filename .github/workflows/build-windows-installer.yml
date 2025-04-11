@@ -60,47 +60,106 @@ jobs:
         import threading
         import time
         import socket
+        import logging
+
+        # Configure logging
+        logging.basicConfig(
+            filename=os.path.join(os.path.expanduser('~'), 'shi_app.log'),
+            level=logging.INFO,
+            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        )
+        logger = logging.getLogger('SHI_App')
 
         def find_free_port():
             with socket.socket() as s:
-                s.bind(('', 0))
+                s.bind(('localhost', 0))
                 return s.getsockname()[1]
 
-        def open_browser(port, delay=1.5):
-            time.sleep(delay)
-            webbrowser.open(f'http://localhost:{port}')
+        def open_browser(port, delay=2.5):
+            """Open the browser after a delay"""
+            try:
+                logger.info(f'Waiting {delay} seconds before opening browser')
+                time.sleep(delay)
+                url = f'http://localhost:{port}'
+                logger.info(f'Opening browser at {url}')
+                webbrowser.open_new(url)
+                logger.info('Browser opened successfully')
+            except Exception as e:
+                logger.error(f'Error opening browser: {str(e)}')
 
         def main():
-            # Set up paths
-            base_dir = os.path.dirname(os.path.abspath(__file__))
-            app_dir = os.path.join(base_dir, 'app')
-            gui_path = os.path.join(app_dir, 'gui.py')
-            
-            # Add app directory to path
-            sys.path.insert(0, base_dir)
-            
-            # Find available port
-            port = find_free_port()
-            
-            # Launch browser in separate thread
-            browser_thread = threading.Thread(target=open_browser, args=(port, 2.0))
-            browser_thread.daemon = True
-            browser_thread.start()
-            
-            # Run Streamlit
-            cmd = [
-                sys.executable, 
-                '-m', 'streamlit', 'run', 
-                gui_path, 
-                '--server.port', str(port),
-                '--server.headless', 'true',
-                '--browser.serverAddress', 'localhost'
-            ]
-            
-            subprocess.run(cmd)
+            try:
+                # Get the directory where the executable is located
+                if getattr(sys, 'frozen', False):
+                    # Running as compiled executable
+                    base_dir = os.path.dirname(sys.executable)
+                else:
+                    # Running as script
+                    base_dir = os.path.dirname(os.path.abspath(__file__))
+                
+                logger.info(f'Base directory: {base_dir}')
+                
+                # Set up paths
+                app_dir = os.path.join(base_dir, 'app')
+                gui_path = os.path.join(app_dir, 'gui.py')
+                
+                logger.info(f'App directory: {app_dir}')
+                logger.info(f'GUI path: {gui_path}')
+                
+                # Add app directory to path
+                sys.path.insert(0, base_dir)
+                sys.path.insert(0, app_dir)
+                
+                # Find available port
+                port = find_free_port()
+                logger.info(f'Using port: {port}')
+                
+                # Launch browser in separate thread
+                browser_thread = threading.Thread(target=open_browser, args=(port, 3.0))
+                browser_thread.daemon = True
+                browser_thread.start()
+                
+                # Create command to run Streamlit
+                cmd = [
+                    sys.executable, 
+                    '-m', 'streamlit', 'run', 
+                    gui_path, 
+                    '--server.port', str(port),
+                    '--server.headless', 'true',
+                    '--browser.serverAddress', 'localhost',
+                    '--browser.gatherUsageStats', 'false',
+                    '--theme.base', 'dark'
+                ]
+                
+                logger.info(f'Running command: {cmd}')
+                
+                # Run Streamlit
+                process = subprocess.Popen(cmd, cwd=base_dir)
+                logger.info(f'Streamlit process started with PID: {process.pid}')
+                
+                # Wait for the process to complete
+                process.wait()
+                logger.info('Streamlit process ended')
+                
+            except Exception as e:
+                logger.error(f'Error in main function: {str(e)}')
+                # Display error to user
+                import tkinter as tk
+                from tkinter import messagebox
+                root = tk.Tk()
+                root.withdraw()
+                messagebox.showerror('SHI App Error', f'An error occurred launching the application: {str(e)}\\n\\nCheck the log file at %USERPROFILE%/shi_app.log')
+                raise
 
         if __name__ == '__main__':
             main()" > launcher.py
+    
+    - name: Create batch file launcher
+      run: |
+        echo "@echo off
+        cd %~dp0
+        start pythonw launcher.py
+        " > run_shi.bat
     
     - name: Create installer config
       run: |
@@ -112,10 +171,16 @@ jobs:
         script=launcher.py
         icon=app_files\assets\shi_icon.ico
 
+        [Command run_shi]
+        entry_point=launcher:main
+        icon=app_files\assets\shi_icon.ico
+        console=false
+
         [Python]
         version=3.9.13
         bitness=64
         format=bundled
+        include_msvcrt=true
 
         [Include]
         # Packages from PyPI that should be included
@@ -127,19 +192,43 @@ jobs:
             tqdm==4.66.2
             altair==5.2.0
             click==8.1.7
+            protobuf==3.20.3
+            watchdog==3.0.0
+            pympler==1.0.1
+            tzlocal==4.3.1
+            gitpython==3.1.40
+            pydeck==0.8.0
+            tenacity==8.2.3
+            packaging==23.2
+            pygments==2.16.1
+            jinja2==3.1.2
+            numpy==1.24.4
+            pandas==2.0.3
+            pyarrow==14.0.1
+            toml==0.10.2
+            blinker==1.7.0
+            rich==13.7.0
             
         # Files to include as loose files, not as a package
         files = app_files/
             launcher.py
+            run_shi.bat
 
         [Build]
         directory=build/nsis
         installer_name=SHI_Setup.exe
 
         [Shortcut SHI]
-        script=launcher.py
+        target=pythonw
+        parameters=launcher.py
         icon=app_files\assets\shi_icon.ico
-        console=false" > installer.cfg
+        console=false
+
+        [Shortcut SHI Command Prompt]
+        target=$INSTDIR\Python\python.exe
+        parameters=app\shi.py
+        icon=app_files\assets\shi_icon.ico
+        console=true" > installer.cfg
     
     - name: Build installer
       run: python -m nsist installer.cfg
@@ -149,5 +238,3 @@ jobs:
       with:
         name: SHI-Windows-Installer
         path: build/nsis/SHI_Setup.exe
-        
-    # Note: GitHub Release step has been removed since it requires additional permissions
