@@ -27,7 +27,6 @@ SHI is an efficient tool that transforms your image collections into beautifully
 
 ### 🍎 macOS
 
-
 #### Option 1: Web UI Tool
 
 ```bash
