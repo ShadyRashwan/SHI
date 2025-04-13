@@ -1,0 +1,57 @@
+altair==5.3.0
+attrs==25.3.0
+blinker==1.9.0
+cachetools==5.5.2
+certifi==2025.1.31
+chardet==5.2.0
+charset-normalizer==3.4.1
+click==8.1.8
+gitdb==4.0.12
+gitpython==3.1.44
+idna==3.10
+importlib-metadata==8.6.1
+importlib_resources==6.5.2
+jinja2==3.1.6
+jsonschema==4.23.0
+jsonschema-specifications==2024.10.1
+lightgbm==4.3.0
+lxml==4.9.3
+markupsafe==3.0.2
+numpy==1.26.4
+packaging==24.2
+pandas==2.2.2
+pillow==10.1.0
+protobuf==4.25.3
+pyarrow==15.0.2
+pydeck==0.9.1
+python-dateutil==2.9.0.post0
+python-docx==1.1.0
+pytz==2025.2
+pyyaml==6.0.2
+referencing==0.36.2
+requests==2.32.3
+rpds-py==0.24.0
+scipy==1.12.0
+six==1.17.0
+smmap==5.0.2
+streamlit==1.44.1
+tenacity==9.1.2
+toml==0.10.2
+toolz==1.0.0
+tornado==6.4.2
+typing-extensions==4.8.0
+urllib3==2.0.3
+watchdog==6.0.0
+zipp==3.21.0
+
+# Additional pip packages
+# Commenting out problematic packages that require compilation
+# appscript==1.2.2
+cffi==1.16.0
+comtypes==1.2.0
+docx2pdf==0.1.8
+pillow-heif==0.15.0
+pycparser==2.21
+# pyheif==0.7.1
+reportlab==4.0.6
+tqdm==4.66.1

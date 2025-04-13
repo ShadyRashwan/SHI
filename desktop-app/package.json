@@ -1,0 +1,79 @@
+{
+  "name": "shi-desktop",
+  "version": "1.0.0",
+  "description": "SHI Desktop - Images to PDF Converter",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "postinstall": "node install.js",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux"
+  },
+  "author": "Shady Rashwan",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "dependencies": {
+    "find-process": "^1.4.7"
+  },
+  "build": {
+    "appId": "com.shadyrashwan.shi",
+    "productName": "SHI - Images to PDF",
+    "files": [
+      "src/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "../app",
+        "to": "app"
+      },
+      {
+        "from": "desktop-requirements.txt",
+        "to": "desktop-requirements.txt"
+      },
+      {
+        "from": "python-env",
+        "to": "python-env"
+      }
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "src/assets/icon.ico",
+      "artifactName": "${productName}-Setup-${version}-${arch}.${ext}"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "src/assets/icon.icns"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "src/assets/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    }
+  }
+}

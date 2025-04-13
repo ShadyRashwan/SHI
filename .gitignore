@@ -1,0 +1,63 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Environment
+venv/
+env/
+ENV/
+.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+windows.md
+
+# User data
+data/*
+!data/README.txt
+
+# Docker
+.docker/
+
+# Logs
+*.log
+log/
+logs/
+
+# Temp files
+tmp/
+temp/
+
+# Electron app specific
+desktop-app/dist/
+desktop-app/node_modules/
+desktop-app/python-env/
+desktop-app/package-lock.json
+desktop-app/debug.log
+desktop-app/readme.md
+desktop-app/build.md
