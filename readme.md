@@ -20,7 +20,7 @@ SHI is an efficient tool that transforms your image collections into beautifully
 
 ### 🪟 Windows
 
-1. Download the latest executable from the [releases page](https://github.com/yourusername/SHI/releases)
+1. Download the latest executable from the [releases page](https://github.com/ShadyRashwan/SHI/releases)
 2. Double-click the `.exe` file to install
 3. Launch "SHI" from your Start menu
 4. No technical knowledge required! 🎉
@@ -72,13 +72,6 @@ python app/shi.py
 - `/app`: Core Python application and GUI
 - `/desktop-app`: Electron wrapper for desktop distribution
 
-### Requirements
-
-- Python 3.9+
-- PIL/Pillow for image processing
-- ReportLab for PDF generation
-- pillow_heif (for HEIC support - Mac images)
-- Streamlit
 
 ## 💡 Tips & Tricks
 
